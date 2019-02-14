@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+# encoding=utf-8
+
+# API token
+token = 'xxxxxx:xxxxxxxxxxxxx3ZoUdlMeuqHjAA'
+
+# Channel / group ID
+forwardDest = -3657xxxxx
+
+# Debug
+debug = True
