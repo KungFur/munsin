@@ -5,6 +5,7 @@ import telegram.bot
 from telegram.ext import messagequeue as mq
 import config
 import logging
+from datetime import datetime, timedelta
 
 debug = config.debug
 
@@ -53,11 +54,17 @@ if __name__ == '__main__':
     upd = telegram.ext.updater.Updater(bot=testbot)
 
     def start(bot, update, user_data):
+        if debug: print(user_data)
+       
         userLang = update.message.from_user.language_code
         if userLang not in ['pl', 'de']:
             user_data['lang'] = 'en'
         else:
             user_data['lang'] = userLang
+       
+        if 'lastUsed' in user_data and user_data['lastUsed'] < datetime.now() + timedelta(minutes = config.cooldown):
+            update.message.reply_text(text('cooldown_' + user_data['lang']))
+            return ConversationHandler.END
 
         update.message.reply_text(text('start_' + user_data['lang']),
             reply_markup = misc.langKeyboard(user_data['lang']))
@@ -96,6 +103,8 @@ if __name__ == '__main__':
             )
 
         update.message.reply_text(text('end_' + user_data['lang']))
+
+        user_data['lastUsed'] = datetime.now()
 
         return ConversationHandler.END
         

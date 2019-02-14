@@ -34,8 +34,19 @@ def text(id, *arg):
 
     elif id == 'cancelled_en':
         ret = 'Cancelled msg in EN. Type /start to restart.'
+
+    ## Cooldown message
+
+    elif id == 'cooldown_pl':
+        ret = 'Cooldown msg in PL. Type /start to try again.'
+
+    elif id == 'cooldown_de':
+        ret = 'Cooldown msg in DE. Type /start to try again.'
+
+    elif id == 'cooldown_en':
+        ret = 'Cooldown msg in EN. Type /start to try again.'
     
-    ## Cancell button
+    ## Cancel button
 
     elif id == 'canc_pl':
         ret = 'Anuluj'
