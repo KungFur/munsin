@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 # encoding=utf-8
 
+# ################
+# ##
+# ## Forwarding Bot for Telegram
+# ## 
+
 import telegram.bot
 from telegram.ext import messagequeue as mq
 import config
@@ -38,7 +43,7 @@ class MQBot(telegram.bot.Bot):
 
 
 if __name__ == '__main__':
-    from telegram import ReplyKeyboardRemove
+    from telegram import ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
     from telegram.ext import MessageHandler, Filters, ConversationHandler, CommandHandler, RegexHandler, CallbackQueryHandler
     from telegram.utils.request import Request
     import os
@@ -56,15 +61,19 @@ if __name__ == '__main__':
     def start(bot, update, user_data):
         if debug: print(user_data)
        
-        userLang = update.message.from_user.language_code
-        if userLang not in ['pl', 'de']:
-            user_data['lang'] = 'en'
-        else:
-            user_data['lang'] = userLang
-       
-        if 'lastUsed' in user_data and user_data['lastUsed'] < datetime.now() + timedelta(minutes = config.cooldown):
-            update.message.reply_text(text('cooldown_' + user_data['lang']))
-            return ConversationHandler.END
+        if 'lang' not in user_data:
+            userLang = update.message.from_user.language_code
+            if userLang not in ['pl', 'de']:
+                user_data['lang'] = 'en'
+            else:
+                user_data['lang'] = userLang
+
+        if 'lastUsed' in user_data:
+            cooldown = (user_data['lastUsed'] - datetime.now() + timedelta(minutes = config.cooldown)).total_seconds()
+
+            if cooldown > 0:
+                update.message.reply_text(text('cooldown_' + user_data['lang'], round(cooldown)))
+                return ConversationHandler.END
 
         update.message.reply_text(text('start_' + user_data['lang']),
             reply_markup = misc.langKeyboard(user_data['lang']))
@@ -73,8 +82,6 @@ if __name__ == '__main__':
     def startHandler(bot, update, user_data):
         query = update.callback_query
         data = misc.separateCallbackData(query.data)
-
-        if debug: print(data)
 
         action = data.pop(0)
 
@@ -97,6 +104,18 @@ if __name__ == '__main__':
             return ConversationHandler.END
 
     def forwardMsg(bot, update, user_data):
+
+        if debug: print(update.message)
+           
+        alnumCount = 0
+        for char in update.message.text:
+            if char.isalnum(): alnumCount += 1
+            elif char.isspace(): alnumCount += 1
+        
+        if len(update.message.text) < config.minMsgLen or alnumCount < 0.8 * len(update.message.text):
+            update.message.reply_text(text('msgTooShort_' + user_data['lang']))
+            return
+
         bot.forward_message(chat_id = config.forwardDest,
             from_chat_id = update.message.chat.id,
             message_id = update.message.message_id
@@ -110,7 +129,6 @@ if __name__ == '__main__':
         
     def cancel(bot, update, user_data):
         update.message.reply_text(text('cancelled_' + user_data['lang']), reply_markup=ReplyKeyboardRemove())
-        user_data.clear()
         return ConversationHandler.END
 
 

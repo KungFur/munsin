@@ -38,13 +38,25 @@ def text(id, *arg):
     ## Cooldown message
 
     elif id == 'cooldown_pl':
-        ret = 'Cooldown msg in PL. Type /start to try again.'
+        ret = f'Poczekaj {arg[0]} sek. zanim wyślesz kolejną wiadomość. Po tym czasie wyślij /start by zacząć ponownie.'
 
     elif id == 'cooldown_de':
-        ret = 'Cooldown msg in DE. Type /start to try again.'
+        ret = f'Bitte warten {arg[0]} sek, bevor weitere Nachrichten senden. Nach dem Warten senden /start um es erneut zu versuchen.'
 
     elif id == 'cooldown_en':
-        ret = 'Cooldown msg in EN. Type /start to try again.'
+        ret = f'Please wait {arg[0]} sec before submitting another message. After waiting, send /start to try again.'
+
+    ## Message too short
+
+    elif id == 'msgTooShort_pl':
+        ret = f'Msg too short in PL.'
+
+    elif id == 'msgTooShort_de':
+        ret = f'Msg too short in DE.'
+
+    elif id == 'msgTooShort_en':
+        ret = f'Msg too short in EN.'
+
     
     ## Cancel button
 
