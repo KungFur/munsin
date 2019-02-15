@@ -7,10 +7,7 @@ import functions.misc as misc
 import pickle
 
 bannedFile = 'banned'
-
-if os.path.getsize(bannedFile) > 0:
-    with open(bannedFile, 'rb') as f:
-        bannedList = pickle.load(f)
+bannedList = misc.loadFromFile(bannedFile)
 
 def ban(bot, update, args):
     user = update.message.reply_to_message.forward_from
@@ -19,8 +16,7 @@ def ban(bot, update, args):
     else:
         ban = user.username
     bannedList.append(ban)
-    with open(bannedFile, 'wb') as f:
-        pickle.dump(bannedList, f)
+    misc.dumpToFile(bannedFile, bannedList)
     update.message.reply_text(
         f'Dodano usera o nicku/ID: {ban} do listy ignorowanych.')
 
@@ -31,8 +27,7 @@ def unban(bot, update, args):
     elif str(args[0]) in bannedList:
         bannedList.remove(str(args[0]))
         update.message.reply_text(f'Usunięto {args[0]} z listy ignorowanych.')
-        with open(bannedFile, 'wb') as f:
-            pickle.dump(bannedList, f)
+        misc.dumpToFile(bannedFile, bannedList)
     else:
         update.message.reply_text(f'Nie znaleziono {args[0]} na liście.')
 

@@ -13,13 +13,14 @@ import json
 
 debug = config.debug
 
-bannedList = []
+print('report')
 
 text = json.load(open('lang.json', encoding='utf8'))
 
 def start(bot, update, user_data):
     if debug:
         print(user_data)
+        print(misc.bannedList)
     user = update.message.from_user
 
     if 'lang' not in user_data:
@@ -29,7 +30,7 @@ def start(bot, update, user_data):
         else:
             user_data['lang'] = userLang
 
-    if user.username in bannedList or str(user.id) in bannedList:
+    if user.username in misc.bannedList or str(user.id) in misc.bannedList:
         update.message.reply_text(text['banned'][user_data['lang']])
         return ConversationHandler.END
 

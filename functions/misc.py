@@ -2,7 +2,11 @@
 # encoding=utf-8
 
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from config import debug
+from config import debug, ownerID
+import pickle
+import os
+
+bannedList = []
 
 def createCallbackData(action,*args):
     query = [str(action)]
@@ -28,3 +32,20 @@ def langKeyboard(cancelText):
             valToBtn(cancelText, 'CANCEL')
         ]])
     return langKeboardMarkup
+
+def loadFromFile(file):
+    if os.path.getsize(file) > 0:
+        with open(file, 'rb') as f:
+            return pickle.load(f)
+    else:
+        return []
+
+def dumpToFile(file, data):
+    with open(file, 'wb') as f:
+            pickle.dump(data, f)
+
+def isAdmin(user, adminsList):
+    if user.id in adminsList or user.id == ownerID:
+        return True
+    else:
+        return False
