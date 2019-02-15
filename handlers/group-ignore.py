@@ -3,7 +3,6 @@
 
 from telegram.ext import Filters, CommandHandler
 import os
-from handlers.text import text
 import functions.misc as misc
 import pickle
 

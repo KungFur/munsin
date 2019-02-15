@@ -5,7 +5,6 @@ from telegram import ReplyKeyboardRemove
 from telegram.ext import MessageHandler, Filters, ConversationHandler, CommandHandler, RegexHandler, CallbackQueryHandler
 from telegram.utils.request import Request
 import os
-from handlers.text import text
 import functions.misc as misc
 import pickle
 import config
@@ -15,6 +14,8 @@ import json
 debug = config.debug
 
 bannedList = []
+
+text = json.load(open('lang.json', encoding='utf8'))
 
 def start(bot, update, user_data):
     if debug:
@@ -29,7 +30,7 @@ def start(bot, update, user_data):
             user_data['lang'] = userLang
 
     if user.username in bannedList or str(user.id) in bannedList:
-        update.message.reply_text(text('banned_' + user_data['lang']))
+        update.message.reply_text(text['banned'][user_data['lang']])
         return ConversationHandler.END
 
     if 'lastUsed' in user_data:
@@ -37,12 +38,11 @@ def start(bot, update, user_data):
                     timedelta(minutes=config.cooldown)).total_seconds()
 
         if cooldown > 0:
-            update.message.reply_text(
-                text('cooldown_' + user_data['lang'], round(cooldown)))
+            update.message.reply_text(text['cooldown'][user_data['lang']] %round(cooldown))
             return ConversationHandler.END
 
-    update.message.reply_text(text('start_' + user_data['lang']),
-                              reply_markup=misc.langKeyboard(user_data['lang']))
+    update.message.reply_text(text['start'][user_data['lang']],
+                              reply_markup=misc.langKeyboard(text['cancel'][user_data['lang']]))
     return GET_REPORT
 
 
@@ -57,15 +57,15 @@ def startHandler(bot, update, user_data):
         try:
             bot.edit_message_text(chat_id=query.message.chat_id,
                                   message_id=query.message.message_id,
-                                  text=text('start_' + user_data['lang']),
-                                  reply_markup=misc.langKeyboard(user_data['lang']))
+                                  text=text['start'][user_data['lang']],
+                                  reply_markup=misc.langKeyboard(text['cancel'][user_data['lang']]))
         except:
             bot.answer_callback_query(callback_query_id=query.id)
     elif action == 'CANCEL':
         try:
             bot.edit_message_text(chat_id=query.message.chat_id,
                                   message_id=query.message.message_id,
-                                  text=text('cancelled_' + user_data['lang']))
+                                  text=text['cancelled'][user_data['lang']])
         except:
             pass
         return ConversationHandler.END
@@ -84,7 +84,7 @@ def forwardMsg(bot, update, user_data):
             alnumCount += 1
 
     if len(update.message.text) < config.minMsgLen or alnumCount < config.minCharRatio * len(update.message.text):
-        update.message.reply_text(text('msgTooShort_' + user_data['lang']))
+        update.message.reply_text(text['msgTooShort'][user_data['lang']])
         return
 
     bot.forward_message(chat_id=config.forwardDest,
@@ -92,7 +92,7 @@ def forwardMsg(bot, update, user_data):
                         message_id=update.message.message_id
                         )
 
-    update.message.reply_text(text('end_' + user_data['lang']))
+    update.message.reply_text(text['end'][user_data['lang']])
 
     user_data['lastUsed'] = datetime.now()
 
@@ -101,7 +101,7 @@ def forwardMsg(bot, update, user_data):
 
 def cancel(bot, update, user_data):
     update.message.reply_text(
-        text('cancelled_' + user_data['lang']), reply_markup=ReplyKeyboardRemove())
+        text['cancelled'][user_data['lang']], reply_markup=ReplyKeyboardRemove())
     return ConversationHandler.END
 
 

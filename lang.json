@@ -1,0 +1,37 @@
+{
+    "start": {
+      "en": "Hi, I'm a Telegram Bot for contacting Gdakon ConOps. If you have any problems or questions, I will forward them to ConOps, so they can get back to you / help you.\n\nPlease enter your message below:",
+      "pl": "Cześć, jestem telegramowym botem który pomoże Ci skontaktować się z Gdakonową ekipą (ConOps). Jeśli masz  jakiś problem, pytanie, bądź potrzebujesz pomocy - przekażę im Twoją wiadomość. Jeśli możesz, proszę pisz w języku angielskim.\n\nWpisz swoją wiadomość poniżej:",
+      "de": "Hallo, Ich bin ein Telegram Bot, der Dir hilft, bei Fragen und Problemen mit jemandem vom ConOps in Kontakt zu treten. Wenn du kannst, schreib bitte auf Englisch.\n\nBitte geben Deine Nachricht unten:"
+    },
+    "end": {
+        "en": "Your message has been forwarded to the Gdakon team. We'll contact you if neccessary.\nUse /start command if you want to send another message.",
+        "pl": "Twoje zgłoszenie zostało przekazane Gdakonowej ekipie. Skontaktujemy się z Tobą jeśli będzie taka potrzeba.\nWpisz /start aby rozpocząć ponownie.",
+        "de": "Deine Nachricht wurde an das Gdakon Team weitergeleitet. Wir werden uns, falls nötig, bei dir melden."
+    },
+    "cooldown": {
+        "en": "Please wait %d sec before submitting another message. After waiting, send /start to try again.",
+        "pl": "Poczekaj %d sek. zanim wyślesz kolejną wiadomość. Po tym czasie wyślij /start by zacząć ponownie.",
+        "de": "Bitte warten %d sek, bevor weitere Nachrichten senden. Nach dem Warten senden /start um es erneut zu versuchen."
+    },
+    "msgTooShort": {
+        "en": "Message is too short.",
+        "pl": "Wiadomość za krótka.",
+        "de": "Nachricht zu kurz."
+    },
+    "banned": {
+        "en": "You have been blocked.",
+        "pl": "Zostałeś zablokowany.",
+        "de": "Du wurdest verbannt."
+    },
+    "cancelled": {
+        "en": "Cancelled. Send /start to retry.",
+        "pl": "Anulowano. Wpisz /start by rozpocząć ponownie.",
+        "de": "Abgebrochen."
+    },
+    "cancel": {
+        "en": "Cancel",
+        "pl": "Anuluj",
+        "de": "Abbrechen"
+    }
+  }

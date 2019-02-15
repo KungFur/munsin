@@ -3,7 +3,6 @@
 
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from config import debug
-from handlers.text import text
 
 def createCallbackData(action,*args):
     query = [str(action)]
@@ -20,12 +19,12 @@ def separateCallbackData(data):
 def valToBtn(val, callback = createCallbackData("IGNORE",0)):
     return InlineKeyboardButton(val, callback_data=callback)    
 
-def langKeyboard(lang):
+def langKeyboard(cancelText):
     langKeboardMarkup = InlineKeyboardMarkup([[
             valToBtn('🇩🇪 Deutsch', createCallbackData('LANG','de')),
             valToBtn('🇬🇧 English', createCallbackData('LANG','en')),
             valToBtn('🇵🇱 Polski', createCallbackData('LANG','pl'))],
         [
-            valToBtn(text('canc_' + lang), 'CANCEL')
+            valToBtn(cancelText, 'CANCEL')
         ]])
     return langKeboardMarkup
