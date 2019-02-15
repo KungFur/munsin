@@ -22,9 +22,9 @@ def valToBtn(val, callback = createCallbackData("IGNORE",0)):
 
 def langKeyboard(lang):
     langKeboardMarkup = InlineKeyboardMarkup([[
-            valToBtn('🇩🇪', createCallbackData('LANG','de')),
-            valToBtn('🇬🇧', createCallbackData('LANG','en')),
-            valToBtn('🇵🇱', createCallbackData('LANG','pl'))],
+            valToBtn('🇩🇪 Deutsch', createCallbackData('LANG','de')),
+            valToBtn('🇬🇧 English', createCallbackData('LANG','en')),
+            valToBtn('🇵🇱 Polski', createCallbackData('LANG','pl'))],
         [
             valToBtn(text('canc_' + lang), 'CANCEL')
         ]])

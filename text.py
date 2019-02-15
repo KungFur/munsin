@@ -5,35 +5,43 @@ def text(id, *arg):
 
     ## Start message
     if id == 'start_en':
-        ret = 'Start msg in ENG'
+        ret = ("Hi, I'm a Telegram Bot for contacting Gdakon ConOps. If you have any problems or questions, "
+            "I will forward them to ConOps, so they can get back to you / help you.\n\n"
+            "Please enter your message below:")
     
     elif id == 'start_pl':
-        ret = 'Start msg in PL'
+        ret = ('Cześć, jestem telegramowym botem który pomoże Ci skontaktować się z Gdakonową ekipą (ConOps). '
+            'Jeśli masz jakiś problem, pytanie, bądź potrzebujesz pomocy - przekażę im Twoją wiadomość.\n\n'
+            'Wpisz swoją wiadomość poniżej:')
 
     elif id == 'start_de':
-        ret = 'Start msg in DE'
+        ret = ('Hallo, Ich bin ein Telegram Bot, der Dir hilft, '
+            'bei Fragen und Problemen mit jemandem vom ConOps in Kontakt zu treten.\n\n'
+            'Bitte geben Deine Nachricht unten:')
 
     ## End message
     
     elif id == 'end_pl':
-        ret = 'End msg in PL. Type /start to restart.'
+        ret = ('Twoje zgłoszenie zostało przekazane Gdakonowej ekipie. Skontaktujemy się z Tobą jeśli będzie taka potrzeba.\n'
+             'Wpisz /start aby rozpocząć ponownie.')
 
     elif id == 'end_de':
-        ret = 'End msg in DE. Type /start to restart.'
+        ret = ' Deine Nachricht wurde an das Gdakon Team weitergeleitet. Wir werden uns, falls nötig, bei dir melden.'
 
     elif id == 'end_en':
-        ret = 'End msg in EN. Type /start to restart.'
+        ret = ("Your message has been forwarded to the Gdakon team. We'll contact you if neccessary.\n"
+            'Use /start command if you want to send another message.')
 
     ## Cancelled message
 
     elif id == 'cancelled_pl':
-        ret = 'Cancelled msg in PL. Type /start to restart.'
+        ret = 'Anulowano. Wpisz /start by rozpocząć ponownie.'
 
     elif id == 'cancelled_de':
-        ret = 'Cancelled msg in DE. Type /start to restart.'
+        ret = 'Abgebrochen. Type /start to restart.'
 
     elif id == 'cancelled_en':
-        ret = 'Cancelled msg in EN. Type /start to restart.'
+        ret = 'Cancelled. Send /start to retry.'
 
     ## Cooldown message
 
@@ -49,13 +57,24 @@ def text(id, *arg):
     ## Message too short
 
     elif id == 'msgTooShort_pl':
-        ret = f'Msg too short in PL.'
+        ret = 'Wiadomość za krótka.'
 
     elif id == 'msgTooShort_de':
-        ret = f'Msg too short in DE.'
+        ret = 'Nachricht zu kurz.'
 
     elif id == 'msgTooShort_en':
-        ret = f'Msg too short in EN.'
+        ret = 'Message is too short'
+
+    ## User banned
+
+    elif id == 'banned_pl':
+        ret = 'Zostałeś zablokowany.'
+
+    elif id == 'banned_de':
+        ret = 'You have been blocked.'
+
+    elif id == 'banned_en':
+        ret = 'You have been blocked.'
 
     
     ## Cancel button
@@ -64,7 +83,7 @@ def text(id, *arg):
         ret = 'Anuluj'
 
     elif id == 'canc_de':
-        ret = 'Cancel (DE)'
+        ret = 'Abbrechen'
 
     elif id == 'canc_en':
         ret = 'Cancel'

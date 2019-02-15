@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 # encoding=utf-8
 
-# ################
-# ##
 # ## Forwarding Bot for Telegram
-# ## 
+# #  
 
 import telegram.bot
 from telegram.ext import messagequeue as mq
@@ -49,6 +47,8 @@ if __name__ == '__main__':
     import os
     from text import text
     import misc
+    import pickle
+    import os
 
     token = config.token
     # for test purposes limit global throughput to 3 messages per 3 seconds
@@ -58,15 +58,25 @@ if __name__ == '__main__':
     testbot = MQBot(token, request=request, mqueue=q)
     upd = telegram.ext.updater.Updater(bot=testbot)
 
+    bannedList = []
+    if os.path.getsize('banned') > 0:
+        with open('banned', 'rb') as f:
+            bannedList = pickle.load(f)
+
     def start(bot, update, user_data):
         if debug: print(user_data)
+        user = update.message.from_user
        
         if 'lang' not in user_data:
-            userLang = update.message.from_user.language_code
+            userLang = user.language_code
             if userLang not in ['pl', 'de']:
                 user_data['lang'] = 'en'
             else:
                 user_data['lang'] = userLang
+        
+        if user.username in bannedList or str(user.id) in bannedList:
+            update.message.reply_text(text('banned_' + user_data['lang']))
+            return ConversationHandler.END
 
         if 'lastUsed' in user_data:
             cooldown = (user_data['lastUsed'] - datetime.now() + timedelta(minutes = config.cooldown)).total_seconds()
@@ -112,7 +122,7 @@ if __name__ == '__main__':
             if char.isalnum(): alnumCount += 1
             elif char.isspace(): alnumCount += 1
         
-        if len(update.message.text) < config.minMsgLen or alnumCount < 0.8 * len(update.message.text):
+        if len(update.message.text) < config.minMsgLen or alnumCount < config.minCharRatio * len(update.message.text):
             update.message.reply_text(text('msgTooShort_' + user_data['lang']))
             return
 
@@ -131,7 +141,27 @@ if __name__ == '__main__':
         update.message.reply_text(text('cancelled_' + user_data['lang']), reply_markup=ReplyKeyboardRemove())
         return ConversationHandler.END
 
-
+    def ban(bot, update, args):
+        user = update.message.reply_to_message.forward_from
+        if 'id' in args or user.username == None:
+            ban = str(user.id)
+        else:
+            ban = user.username
+        bannedList.append(ban)
+        with open('banned', 'wb') as f:
+            pickle.dump(bannedList, f)
+        update.message.reply_text(f'Dodano usera o nicku/ID: {ban} do listy ignorowanych.')
+        
+    def unban(bot, update, args):
+        if args == []:
+            update.message.reply_text('Nie podano ID/username.')
+        elif str(args[0]) in bannedList:
+            bannedList.remove(str(args[0]))
+            update.message.reply_text(f'Usunięto {args[0]} z listy ignorowanych.')
+            with open('banned', 'wb') as f:
+                pickle.dump(bannedList, f)
+        else:
+            update.message.reply_text(f'Nie znaleziono {args[0]} na liście.')
 
     GET_REPORT = range(1)
 
@@ -149,6 +179,8 @@ if __name__ == '__main__':
     )
 
     upd.dispatcher.add_handler(reportAction)
+    upd.dispatcher.add_handler(CommandHandler('ban', ban, pass_args=True, filters = Filters.group))
+    upd.dispatcher.add_handler(CommandHandler('unban', unban, pass_args=True, filters = Filters.group))
 
     upd.dispatcher.add_error_handler(error)
     upd.start_polling()
