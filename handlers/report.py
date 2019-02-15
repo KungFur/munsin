@@ -25,7 +25,7 @@ def start(bot, update, user_data):
 
     if 'lang' not in user_data:
         userLang = user.language_code
-        if userLang not in ['pl', 'de']:
+        if userLang not in text['langKeyboard']['buttons'].keys():
             user_data['lang'] = 'en'
         else:
             user_data['lang'] = userLang
@@ -43,7 +43,7 @@ def start(bot, update, user_data):
             return ConversationHandler.END
 
     update.message.reply_text(text['start'][user_data['lang']],
-                              reply_markup=misc.langKeyboard(text['cancel'][user_data['lang']]))
+                              reply_markup=misc.langKeyboard(text['langKeyboard'],user_data['lang']))
     return GET_REPORT
 
 
@@ -59,7 +59,7 @@ def startHandler(bot, update, user_data):
             bot.edit_message_text(chat_id=query.message.chat_id,
                                   message_id=query.message.message_id,
                                   text=text['start'][user_data['lang']],
-                                  reply_markup=misc.langKeyboard(text['cancel'][user_data['lang']]))
+                                  reply_markup=misc.langKeyboard(text['langKeyboard'],user_data['lang']))
         except:
             bot.answer_callback_query(callback_query_id=query.id)
     elif action == 'CANCEL':

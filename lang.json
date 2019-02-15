@@ -1,8 +1,8 @@
 {
     "start": {
-      "en": "Hi, I'm a Telegram Bot for contacting Gdakon ConOps. If you have any problems or questions, I will forward them to ConOps, so they can get back to you / help you.\n\nPlease enter your message below:",
-      "pl": "Cześć, jestem telegramowym botem który pomoże Ci skontaktować się z Gdakonową ekipą (ConOps). Jeśli masz  jakiś problem, pytanie, bądź potrzebujesz pomocy - przekażę im Twoją wiadomość. Jeśli możesz, proszę pisz w języku angielskim.\n\nWpisz swoją wiadomość poniżej:",
-      "de": "Hallo, Ich bin ein Telegram Bot, der Dir hilft, bei Fragen und Problemen mit jemandem vom ConOps in Kontakt zu treten. Wenn du kannst, schreib bitte auf Englisch.\n\nBitte geben Deine Nachricht unten:"
+        "en": "Hi, I'm a Telegram Bot for contacting Gdakon ConOps. If you have any problems or questions, I will forward them to ConOps, so they can get back to you / help you.\n\nPlease enter your message below:",
+        "pl": "Cześć, jestem telegramowym botem który pomoże Ci skontaktować się z Gdakonową ekipą (ConOps). Jeśli masz  jakiś problem, pytanie, bądź potrzebujesz pomocy - przekażę im Twoją wiadomość. Jeśli możesz, proszę pisz w języku angielskim.\n\nWpisz swoją wiadomość poniżej:",
+        "de": "Hallo, Ich bin ein Telegram Bot, der Dir hilft, bei Fragen und Problemen mit jemandem vom ConOps in Kontakt zu treten. Wenn du kannst, schreib bitte auf Englisch.\n\nBitte geben Deine Nachricht unten:"
     },
     "end": {
         "en": "Your message has been forwarded to the Gdakon team. We'll contact you if neccessary.\nUse /start command if you want to send another message.",
@@ -29,9 +29,16 @@
         "pl": "Anulowano. Wpisz /start by rozpocząć ponownie.",
         "de": "Abgebrochen."
     },
-    "cancel": {
-        "en": "Cancel",
-        "pl": "Anuluj",
-        "de": "Abbrechen"
+    "langKeyboard": {
+        "buttons": {
+            "en": "🇬🇧 English",
+            "pl": "🇵🇱 Polski",
+            "de": "🇩🇪 Deutsch"
+        },
+        "cancel": {
+            "en": "Cancel",
+            "pl": "Anuluj",
+            "de": "Abbrechen"
+        }
     }
-  }
+}

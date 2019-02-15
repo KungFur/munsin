@@ -12,8 +12,8 @@ debug = config.debug
 
 logger = logging.getLogger(__name__)
 
-bannedFile = 'banned'
-adminsFile = 'admins'
+bannedFile = config.bannedFile
+adminsFile = config.adminsFile
 
 misc.bannedList = misc.loadFromFile(bannedFile)
 adminsList = misc.loadFromFile(adminsFile)

@@ -23,17 +23,19 @@ def separateCallbackData(data):
 def valToBtn(val, callback = createCallbackData("IGNORE",0)):
     return InlineKeyboardButton(val, callback_data=callback)    
 
-def langKeyboard(cancelText):
-    langKeboardMarkup = InlineKeyboardMarkup([[
-            valToBtn('🇩🇪 Deutsch', createCallbackData('LANG','de')),
-            valToBtn('🇬🇧 English', createCallbackData('LANG','en')),
-            valToBtn('🇵🇱 Polski', createCallbackData('LANG','pl'))],
-        [
-            valToBtn(cancelText, 'CANCEL')
-        ]])
-    return langKeboardMarkup
+def langKeyboard(langKeyDict, langCode):
+    langKeyboardMarkup = [[],[]]
+    for code, label in langKeyDict['buttons'].items():
+        langKeyboardMarkup[0].append(
+            valToBtn(label, createCallbackData('LANG',code)))
+    langKeyboardMarkup[1].append(
+        valToBtn(langKeyDict['cancel'][langCode], 'CANCEL')
+    )
+    return InlineKeyboardMarkup(langKeyboardMarkup)
 
 def loadFromFile(file):
+    if os.path.exists(file) == False:
+        open(file, 'a')
     if os.path.getsize(file) > 0:
         with open(file, 'rb') as f:
             return pickle.load(f)

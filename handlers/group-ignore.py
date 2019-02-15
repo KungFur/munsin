@@ -5,9 +5,10 @@ from telegram.ext import Filters, CommandHandler
 import os
 import functions.misc as misc
 import pickle
+import config
 
-bannedFile = 'banned'
-bannedList = misc.loadFromFile(bannedFile)
+bannedFile = config.bannedFile
+misc.bannedList = misc.loadFromFile(bannedFile)
 
 def ban(bot, update, args):
     user = update.message.reply_to_message.forward_from
@@ -15,25 +16,24 @@ def ban(bot, update, args):
         ban = str(user.id)
     else:
         ban = user.username
-    bannedList.append(ban)
-    misc.dumpToFile(bannedFile, bannedList)
+    misc.bannedList.append(ban)
+    misc.dumpToFile(bannedFile, misc.bannedList)
     update.message.reply_text(
         f'Dodano usera o nicku/ID: {ban} do listy ignorowanych.')
-
 
 def unban(bot, update, args):
     if args == []:
         update.message.reply_text('Nie podano ID/username.')
-    elif str(args[0]) in bannedList:
-        bannedList.remove(str(args[0]))
+    elif str(args[0]) in misc.bannedList:
+        misc.bannedList.remove(str(args[0]))
         update.message.reply_text(f'Usunięto {args[0]} z listy ignorowanych.')
-        misc.dumpToFile(bannedFile, bannedList)
+        misc.dumpToFile(bannedFile, misc.bannedList)
     else:
         update.message.reply_text(f'Nie znaleziono {args[0]} na liście.')
 
 def banlist(bot, update):
     text = 'Lista banów:'
-    for user in bannedList:
+    for user in misc.bannedList:
         text += '\n' + str(user)
     update.message.reply_text(text)
 
@@ -47,7 +47,8 @@ def help(bot, update):
 
 
 HANDLERS = (
-    CommandHandler('ban', ban, pass_args=True, filters=Filters.group),
+    CommandHandler('ban', ban, pass_args=True, 
+        filters=(Filters.group & Filters.reply)),
     CommandHandler('unban', unban, pass_args=True, filters=Filters.group),
     CommandHandler('banlist', banlist, filters=Filters.group),
     CommandHandler('help', help, filters=Filters.group),
