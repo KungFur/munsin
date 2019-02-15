@@ -3,7 +3,7 @@
 
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from config import debug
-from text import text
+from handlers.text import text
 
 def createCallbackData(action,*args):
     query = [str(action)]

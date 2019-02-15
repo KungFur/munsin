@@ -20,3 +20,9 @@ minCharRatio = 0.8
 
 # Debug
 debug = True
+
+# Modules
+# report - bot-to-channel/group forwarding module,
+# group-ignore - user-ignore functionality, useful for 'helper' groups, all users on group can ban an user,
+# channel-ignore - #TODO
+modules = ['report', 'group-ignore']

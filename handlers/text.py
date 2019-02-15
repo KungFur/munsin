@@ -5,19 +5,16 @@ def text(id, *arg):
 
     ## Start message
     if id == 'start_en':
-        ret = ("Hi, I'm a Telegram Bot for contacting Gdakon ConOps. If you have any problems or questions, "
-            "I will forward them to ConOps, so they can get back to you / help you.\n\n"
+        ret = ("Hi, I'm a Telegram Bot for contacting Gdakon ConOps. If you have any problems or questions, I will forward them to ConOps, so they can get back to you / help you.\n\n"
             "Please enter your message below:")
     
     elif id == 'start_pl':
-        ret = ('Cześć, jestem telegramowym botem który pomoże Ci skontaktować się z Gdakonową ekipą (ConOps). '
-            'Jeśli masz jakiś problem, pytanie, bądź potrzebujesz pomocy - przekażę im Twoją wiadomość.\n\n'
+        ret = ('Cześć, jestem telegramowym botem który pomoże Ci skontaktować się z Gdakonową ekipą (ConOps). Jeśli masz  jakiś problem, pytanie, bądź potrzebujesz pomocy - przekażę im Twoją wiadomość. Jeśli możesz, proszę pisz w języku angielskim.\n\n'
             'Wpisz swoją wiadomość poniżej:')
 
     elif id == 'start_de':
-        ret = ('Hallo, Ich bin ein Telegram Bot, der Dir hilft, '
-            'bei Fragen und Problemen mit jemandem vom ConOps in Kontakt zu treten.\n\n'
-            'Bitte geben Deine Nachricht unten:')
+        ret = ("Hallo, Ich bin ein Telegram Bot, der Dir hilft, bei Fragen und Problemen mit jemandem vom ConOps in Kontakt zu treten. Wenn du kannst, schreib bitte auf Englisch.\n\n"
+            "Bitte geben Deine Nachricht unten:")
 
     ## End message
     
