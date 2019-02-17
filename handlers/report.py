@@ -10,18 +10,21 @@ import pickle
 import config
 from datetime import datetime, timedelta
 import json
+import functions.lang as lang
 
 debug = config.debug
 
 print('report')
 
 text = json.load(open('lang.json', encoding='utf8'))
+lang.validator(text)
 
 def start(bot, update, user_data):
-    if debug:
-        print(user_data)
-        print(misc.bannedList)
     user = update.message.from_user
+    if debug:
+        print('user_data:', user_data)
+        print('bannedList: ', misc.bannedList)
+        print('user:', user)
 
     if 'lang' not in user_data:
         userLang = user.language_code

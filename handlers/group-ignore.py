@@ -22,14 +22,26 @@ def ban(bot, update, args):
         f'Dodano usera o nicku/ID: {ban} do listy ignorowanych.')
 
 def unban(bot, update, args):
-    if args == []:
+    if update.message.reply_to_message != None:
+        user = update.message.reply_to_message.forward_from
+        if str(user.id) in misc.bannedList:
+            unban = str(user.id)
+        elif user.username != None and user.username in misc.bannedList:
+            unban = user.username
+        else:
+            update.message.reply_text('Autor wiadomości nie jest na liście ignorowanych.')
+            return
+    elif args == []:
         update.message.reply_text('Nie podano ID/username.')
+        return
     elif str(args[0]) in misc.bannedList:
-        misc.bannedList.remove(str(args[0]))
-        update.message.reply_text(f'Usunięto {args[0]} z listy ignorowanych.')
-        misc.dumpToFile(bannedFile, misc.bannedList)
+        unban = str(args[0])
     else:
         update.message.reply_text(f'Nie znaleziono {args[0]} na liście.')
+        return
+    misc.bannedList.remove(unban)
+    misc.dumpToFile(bannedFile, misc.bannedList)
+    update.message.reply_text(f'Usunięto użytkownika/ID: {unban} z listy ignorowanych.')
 
 def banlist(bot, update):
     text = 'Lista banów:'
