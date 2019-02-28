@@ -9,6 +9,9 @@ token = 'xxxxxx:xxxxxxxxxxxxx3ZoUdlMeuqHjAA'
 # Needs to be provided as negative integer value. Channels prefix: -100
 forwardDest = -36570000
 
+#Silent forwarding (no notification on channel/group?):
+silent = False
+
 # Report cooldown time (in minutes)
 cooldown = 3
 
