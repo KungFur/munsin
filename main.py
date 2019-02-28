@@ -6,9 +6,11 @@ from telegram.ext import messagequeue as mq
 import config
 import logging
 
+
 debug = config.debug
 
-logging.basicConfig(format='[%(asctime)s][%(name)s] %(message)s', level=logging.INFO)
+logging.basicConfig(filename='main.log', format='[%(asctime)s][%(name)s] %(message)s', 
+    level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def error(bot, update, err):
@@ -39,16 +41,20 @@ class MQBot(telegram.bot.Bot):
 
 if __name__ == '__main__':
     from telegram.utils.request import Request
+    from telegram.ext import Filters, CommandHandler
     import os
+    import sys
     import importlib
 
+    from threading import Thread
+
     token = config.token
-    # for test purposes limit global throughput to 3 messages per 3 seconds
-    q = mq.MessageQueue(all_burst_limit=3, all_time_limit_ms=3000)
+    # set message queue limits: 20msgs/60s for groups or 30msgs/s for user chats
+    q = mq.MessageQueue(all_burst_limit=19, all_time_limit_ms=60000)
     # set connection pool size for bot 
     request = Request(con_pool_size=8)
-    testbot = MQBot(token, request=request, mqueue=q)
-    upd = telegram.ext.updater.Updater(bot=testbot)
+    tgBot = MQBot(token, request=request, mqueue=q)
+    upd = telegram.ext.updater.Updater(bot=tgBot)
 
     for module in config.modules:
         handlers = getattr(importlib.import_module(f'handlers.{module}'), 'HANDLERS')
@@ -56,5 +62,20 @@ if __name__ == '__main__':
         for handler in handlers:
             upd.dispatcher.add_handler(handler)
 
+    def stop_and_restart():
+        """Gracefully stop the Updater and replace the current process with a new one"""
+        upd.stop()
+        os.execl(sys.executable, sys.executable, *sys.argv)
+
+    def stop():
+        upd.stop()
+
+    def restart(bot, update):
+        update.message.reply_text('Bot is restarting...')
+        logger.info('Bot is restaring...')
+        Thread(target=stop_and_restart).start()
+
+    upd.dispatcher.add_handler(CommandHandler('r', restart, filters=Filters.user(user_id=config.ownerID)))
     upd.dispatcher.add_error_handler(error)
     upd.start_polling()
+    upd.idle()

@@ -8,8 +8,6 @@ import pickle
 import logging
 import config
 
-debug = config.debug
-
 logger = logging.getLogger(__name__)
 
 bannedFile = config.bannedFile
@@ -18,7 +16,8 @@ adminsFile = config.adminsFile
 misc.bannedList = misc.loadFromFile(bannedFile)
 adminsList = misc.loadFromFile(adminsFile)
 
-if debug: print(misc.bannedList, adminsList)
+logger.debug('Banned list: %s', misc.bannedList)
+logger.debug('Admins list: %s', adminsList)
 
 def addAdmin(bot, update, args):
     if args != []:
@@ -51,7 +50,7 @@ def ban(bot, update, args):
 def unban(bot, update, args):
     user = update.message.from_user
     if not misc.isAdmin(user, adminsList):
-        logger.info('user %s (%s) tried to ban someone', user.username, user.id)
+        logger.info('user %s (%s) tried to unban someone', user.username, user.id)
         return
     if args == []:
         update.message.reply_text('Nie podano ID/username.')
@@ -72,6 +71,9 @@ def banlist(bot, update):
     update.message.reply_text(text)
 
 def help(bot, update):
+    user = update.message.from_user
+    if not misc.isAdmin(user, adminsList):
+        return
     helpText = ('Lista komend:\n'
         '/ban [username/id] - blokuje autora wiadomości. Odpowiedz (reply) na sforwardowaną przez bota wiadomość a jej autor zostanie zbanowany.\n'
         '/unban [username/id] - odblokowuje użytkownika o podanym id/username.\n'

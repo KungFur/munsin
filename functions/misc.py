@@ -2,9 +2,12 @@
 # encoding=utf-8
 
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from config import debug, ownerID
+from config import ownerID
 import pickle
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 bannedList = []
 
@@ -17,7 +20,7 @@ def separateCallbackData(data):
     """ Separate the callback data"""
     ret = []
     [ret.append(str(x)) for x in data.split(";")]
-    if debug: print(ret)
+    logger.debug('separated callback data: %s', ret)
     return ret
 
 def valToBtn(val, callback = createCallbackData("IGNORE",0)):
