@@ -11,20 +11,18 @@ import config
 from datetime import datetime, timedelta
 import json
 import functions.lang as lang
+import logging
 
-debug = config.debug
-
-print('report')
+logger = logging.getLogger(__name__)
 
 text = json.load(open('lang.json', encoding='utf8'))
 lang.validator(text)
 
 def start(bot, update, user_data):
     user = update.message.from_user
-    if debug:
-        print('user_data:', user_data)
-        print('bannedList: ', misc.bannedList)
-        print('user:', user)
+    logger.debug('user_data: %s', user_data)
+    logger.debug('bannedList: %s', misc.bannedList)
+    logger.debug('user: %s', user)
 
     if 'lang' not in user_data:
         userLang = user.language_code
@@ -77,8 +75,7 @@ def startHandler(bot, update, user_data):
 
 def forwardMsg(bot, update, user_data):
 
-    if debug:
-        print(update.message)
+    logger.debug('received message: %s', update.message)
 
     alnumCount = 0
     for char in update.message.text:
@@ -93,7 +90,8 @@ def forwardMsg(bot, update, user_data):
 
     bot.forward_message(chat_id=config.forwardDest,
                         from_chat_id=update.message.chat.id,
-                        message_id=update.message.message_id
+                        message_id=update.message.message_id,
+                        disable_notification=config.silent
                         )
 
     update.message.reply_text(text['end'][user_data['lang']])

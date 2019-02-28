@@ -8,8 +8,6 @@ import pickle
 import logging
 import config
 
-debug = config.debug
-
 logger = logging.getLogger(__name__)
 
 bannedFile = config.bannedFile
@@ -18,7 +16,8 @@ adminsFile = config.adminsFile
 misc.bannedList = misc.loadFromFile(bannedFile)
 adminsList = misc.loadFromFile(adminsFile)
 
-if debug: print(misc.bannedList, adminsList)
+logger.debug('Banned list: %s', misc.bannedList)
+logger.debug('Admins list: %s', adminsList)
 
 def addAdmin(bot, update, args):
     if args != []:
