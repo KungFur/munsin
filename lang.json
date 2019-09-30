@@ -5,7 +5,7 @@
     },
     "end": {
         "en": "Your message has been forwarded to the KungFur team. We'll contact you if neccessary.\nUse /start command if you want to send another message.",
-        "pl": "Twoje zgłoszenie zostało przekazane organizatorów KungFura. Skontaktujemy się z Tobą jeśli będzie taka potrzeba.\nWpisz /start aby rozpocząć ponownie."
+        "pl": "Twoje zgłoszenie zostało przekazane organizatorom KungFura. Skontaktujemy się z Tobą jeśli będzie taka potrzeba.\nWpisz /start aby rozpocząć ponownie."
     },
     "cooldown": {
         "en": "Please wait %d sec before submitting another message. After waiting, send /start to try again.",
