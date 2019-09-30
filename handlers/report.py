@@ -24,15 +24,8 @@ def start(bot, update, user_data):
     logger.debug('bannedList: %s', misc.bannedList)
     logger.debug('user: %s', user)
 
-    if 'lang' not in user_data:
-        userLang = user.language_code
-        if userLang not in text['langKeyboard']['buttons'].keys():
-            user_data['lang'] = 'en'
-        else:
-            user_data['lang'] = userLang
-
     if user.username in misc.bannedList or str(user.id) in misc.bannedList:
-        update.message.reply_text(text['banned'][user_data['lang']])
+        update.message.reply_text(text['banned']['pl'])
         return ConversationHandler.END
 
     if 'lastUsed' in user_data:
@@ -40,11 +33,10 @@ def start(bot, update, user_data):
                     timedelta(minutes=config.cooldown)).total_seconds()
 
         if cooldown > 0:
-            update.message.reply_text(text['cooldown'][user_data['lang']] %round(cooldown))
+            update.message.reply_text(text['cooldown']['pl'] %round(cooldown))
             return ConversationHandler.END
 
-    update.message.reply_text(text['start'][user_data['lang']],
-                              reply_markup=misc.langKeyboard(text['langKeyboard'],user_data['lang']))
+    update.message.reply_text(text['start']['pl'])
     return GET_REPORT
 
 
@@ -55,19 +47,18 @@ def startHandler(bot, update, user_data):
     action = data.pop(0)
 
     if action == 'LANG':
-        user_data['lang'] = data[0]
+        user_data['lang'] = 'pl'
         try:
             bot.edit_message_text(chat_id=query.message.chat_id,
                                   message_id=query.message.message_id,
-                                  text=text['start'][user_data['lang']],
-                                  reply_markup=misc.langKeyboard(text['langKeyboard'],user_data['lang']))
+                                  text=text['start']['pl'])
         except:
             bot.answer_callback_query(callback_query_id=query.id)
     elif action == 'CANCEL':
         try:
             bot.edit_message_text(chat_id=query.message.chat_id,
                                   message_id=query.message.message_id,
-                                  text=text['cancelled'][user_data['lang']])
+                                  text=text['start']['pl'])
         except:
             pass
         return ConversationHandler.END
@@ -85,7 +76,7 @@ def forwardMsg(bot, update, user_data):
             alnumCount += 1
 
     if len(update.message.text) < config.minMsgLen or alnumCount < config.minCharRatio * len(update.message.text):
-        update.message.reply_text(text['msgTooShort'][user_data['lang']])
+        update.message.reply_text(text['msgTooShort']['pl'])
         return
 
     bot.forward_message(chat_id=config.forwardDest,
@@ -94,7 +85,10 @@ def forwardMsg(bot, update, user_data):
                         disable_notification=config.silent
                         )
 
-    update.message.reply_text(text['end'][user_data['lang']])
+    bot.send_message(chat_id=config.forwardDest,
+                     text=update.message.from_user.full_name+' ('+update.message.from_user.name+')')
+
+    update.message.reply_text(text['end']['pl'])
 
     user_data['lastUsed'] = datetime.now()
 
@@ -103,7 +97,7 @@ def forwardMsg(bot, update, user_data):
 
 def cancel(bot, update, user_data):
     update.message.reply_text(
-        text['cancelled'][user_data['lang']], reply_markup=ReplyKeyboardRemove())
+        text['cancelled']['pl'], reply_markup=ReplyKeyboardRemove())
     return ConversationHandler.END
 
 
