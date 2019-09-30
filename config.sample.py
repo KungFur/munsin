@@ -39,3 +39,21 @@ modules = ['report', 'group-ignore']
 # # Files
 bannedFile = 'banned' # filename for storing banned users
 adminsFile = 'admins' # filename for storing admins
+
+# Logging
+#
+# logging_output:
+# stdout = output is logged to stdout (default)
+# file   = output is logged to file
+#
+# log_path = path to log file, ignored if stdout is the log_output, defaults to "main.log" if unset
+#
+# log_level: must be set to one of the following strings:
+# CRITICAL
+# ERROR
+# WARNING
+# INFO (default)
+# DEBUG
+# NOTSET
+#log_output = "stdout"
+#log_level = "WARNING"

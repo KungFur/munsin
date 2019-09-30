@@ -5,12 +5,42 @@ import telegram.bot
 from telegram.ext import messagequeue as mq
 import config
 import logging
+import sys
 
+def get_log_level():
+    log_level = "INFO"
+    try:
+        log_level = config.log_level
+    except:
+        print("Log level not declared. Defaulting to INFO")
+    return getattr(logging,log_level)
+
+def get_log_file_path():
+    log_file = "main.log"
+    try:
+        log_file = config.log_file
+    except:
+        print('Log file not declared. Defaulting to "main.log"')
+    return log_file
+
+def get_log_output():
+    log_output = "stdout"
+    try:
+        log_output = config.log_output
+    except:
+        print("Log output not declared. Defaulting to standard output.")
+    return log_output
 
 debug = config.debug
+log_level = get_log_level()
+log_output = get_log_output()
 
-logging.basicConfig(filename='main.log', format='[%(asctime)s][%(name)s] %(message)s', 
-    level=logging.INFO)
+if log_output == "stdout":
+    logging.basicConfig(stream=sys.stdout, format='[%(name)s] %(message)s', level=log_level)
+if log_output == "file":
+    logging.basicConfig(filename=get_log_file_path(), format='[%(asctime)s][%(name)s] %(message)s', 
+        level=log_level)
+
 logger = logging.getLogger(__name__)
 
 def error(bot, update, err):
