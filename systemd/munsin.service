@@ -1,0 +1,17 @@
+[Unit]
+Description=Munsin, Telegram grievance and concern collector
+After=network.target auditd.service
+ConditionPathExists=/usr/bin/python3
+
+[Service]
+User=munsin
+ExecStart=/var/lib/munsin/main.py
+KillMode=process
+KillSignal=SIGKILL
+Restart=on-failure
+RestartPreventExitStatus=255
+Type=simple
+WorkingDirectory=/var/lib/munsin
+
+[Install]
+WantedBy=multi-user.target

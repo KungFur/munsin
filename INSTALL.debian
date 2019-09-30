@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+function main {
+	local systemwide_dependencies=("python3-certifi" "python3-cryptography" "python3-future" "python3-tornado" "python3-pip")
+	apt-get install ${systemwide_dependencies[@]} -y
+	pip3 install python-telegram-bot
+}
+
+main $@
